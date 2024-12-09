@@ -1,0 +1,14 @@
+﻿{
+  "ID": "07C11C587B744730A9D8CBE30B1106E4",
+  "ActionKeyword": "tempo",
+  "IsGlobal": false,
+  "Name": "Tempo",
+  "Author": "Rakambda,muller-j",
+  "Version": "0.0.1",
+  "Language": "csharp",
+  "Website": "https://github.com/RakambdaOrg/PowerToys-Run-Tempo",
+  "ExecuteFileName": "Community.PowerToys.Run.Plugin.Tempo.dll",
+  "IcoPathDark": "Images\\icon.dark.png",
+  "IcoPathLight": "Images\\icon.light.png",
+  "DynamicLoading": true
+}
