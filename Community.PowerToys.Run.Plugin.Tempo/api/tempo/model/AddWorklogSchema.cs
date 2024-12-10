@@ -1,4 +1,4 @@
-﻿namespace PowerToys_Run_Tempo.api.tempo.model.model;
+﻿namespace PowerToys_Run_Tempo.api.tempo.model;
 
 public class AddWorklogSchema(
     string authorAccountId,

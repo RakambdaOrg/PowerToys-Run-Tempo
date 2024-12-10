@@ -1,7 +1,7 @@
 ﻿using System.Net;
 using System.Text.RegularExpressions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using PowerToys_Run_Tempo.api.tempo.model.model;
+using PowerToys_Run_Tempo.api.tempo.model;
 using PowerToys_Run_Tempo.tempo.api;
 
 namespace PowerToys_Run_Tempo_UnitTest;
@@ -74,5 +74,13 @@ public class TempoApiTests
         Assert.IsNotNull(thrown.ErrorResponse);
         Assert.AreEqual(1, thrown.ErrorResponse.errors.Length);
         Assert.AreEqual("Invalid issue id", thrown.ErrorResponse.errors[0].message);
+    }
+    
+    [TestMethod]
+    public void ShouldGetGlobalConfiguration()
+    {
+        var result = _subject.GetGlobalConfiguration();
+        Assert.IsNotNull(result);
+        Assert.IsTrue(result.maxHoursPerDayPerUser > 0);
     }
 }

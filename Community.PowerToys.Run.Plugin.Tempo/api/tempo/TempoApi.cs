@@ -6,8 +6,6 @@ using System.Net.Mime;
 using System.Text;
 using System.Text.Json;
 using PowerToys_Run_Tempo.api.tempo.model;
-using PowerToys_Run_Tempo.api.tempo.model.model;
-using Wox.Plugin.Logger;
 
 namespace PowerToys_Run_Tempo.tempo.api;
 
@@ -24,7 +22,7 @@ public class TempoApi
     }
 
     public AddWorklogResponse? AddWorklog(AddWorklogSchema schema)
-    {        
+    {
         LogWrapper.Info($"Adding worklog {schema}", GetType());
         var (_, content) = Send(new HttpRequestMessage
         {
@@ -46,6 +44,17 @@ public class TempoApi
             Method = HttpMethod.Delete,
             RequestUri = new Uri(new Uri(Endpoint), $"/4/worklogs/{id}"),
         });
+    }
+
+    public virtual GlobalConfigurationResponse? GetGlobalConfiguration()
+    {
+        var (_, content) = Send(new HttpRequestMessage
+        {
+            Method = HttpMethod.Get,
+            RequestUri = new Uri(new Uri(Endpoint), "/4/globalconfiguration"),
+        });
+
+        return JsonSerializer.Deserialize<GlobalConfigurationResponse>(content);
     }
 
     private (HttpResponseMessage, string) Send(HttpRequestMessage request)

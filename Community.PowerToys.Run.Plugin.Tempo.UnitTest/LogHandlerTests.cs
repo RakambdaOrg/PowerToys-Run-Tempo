@@ -3,6 +3,7 @@ using System.Linq;
 using System.Text.RegularExpressions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
+using PowerToys_Run_Tempo.api.tempo.model;
 using PowerToys_Run_Tempo.handler;
 using PowerToys_Run_Tempo.jira.api;
 using PowerToys_Run_Tempo.jira.api.model;
@@ -109,6 +110,24 @@ public class LogHandlerTests
         Assert.AreEqual(2, results.Count);
         Assert.AreEqual("Error", results[0].Title);
         Assert.AreEqual("Failed to parse duration", results[0].SubTitle);
+
+        _tempoApi.VerifyAll();
+    }
+    
+    [TestMethod]
+    public void ShouldGetIssueInfoAndCreateResultForADay()
+    {
+        const string issueSummary = "Issue summary";
+        
+        _jiraApi.Setup(api => api.GetIssueInfo(_issueKey)).Returns(new IssueInfoResponse("123", _issueKey, new Fields(issueSummary)));
+        _tempoApi.Setup(api => api.GetGlobalConfiguration()).Returns(new GlobalConfigurationResponse(8));
+
+        var query = new Query($"log {_issueKey} 1d");
+        var results = _subject.HandleQuery(query);
+
+        Assert.AreEqual(1, results.Count);
+        StringAssert.Matches(results[0].Title, new Regex($@"Log time on {_issueKey} at \d{{4}}-\d{{2}}-\d{{2}} \d+:\d+:\d+ for 1d"));
+        Assert.AreEqual(issueSummary, results[0].SubTitle);
 
         _tempoApi.VerifyAll();
     }

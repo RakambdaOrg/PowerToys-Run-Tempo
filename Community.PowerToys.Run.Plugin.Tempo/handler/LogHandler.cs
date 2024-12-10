@@ -1,11 +1,10 @@
 ﻿using System.Globalization;
 using System.Text.RegularExpressions;
-using PowerToys_Run_Tempo.api.tempo.model.model;
+using PowerToys_Run_Tempo.api.tempo.model;
 using PowerToys_Run_Tempo.jira.api;
 using PowerToys_Run_Tempo.jira.api.model;
 using PowerToys_Run_Tempo.tempo.api;
 using Wox.Plugin;
-using Wox.Plugin.Logger;
 
 namespace PowerToys_Run_Tempo.handler;
 
@@ -28,6 +27,7 @@ public partial class LogHandler(
     private static partial Regex IssueKeyRegexGenerator();
 
     private readonly Dictionary<string, IssueInfoResponse> _jiraIssueCache = new();
+    private int? _maxHoursInDay = null;
 
     public List<Result> HandleQuery(Query query)
     {
@@ -113,14 +113,21 @@ public partial class LogHandler(
         return false;
     }
 
-    private static TimeSpan? ExtractPeriod(string duration)
+    private TimeSpan? ExtractPeriod(string duration)
     {
-        if (duration == "")
+        switch (duration)
         {
-            return null;
+            case "":
+                return null;
+            case "1d" or "1D":
+            {
+                var maxHours = GetMaxHoursInDay(); 
+                return maxHours == null ? null : new TimeSpan(maxHours.Value, 0, 0);
+            }
         }
 
         var match = DurationRegex.Match(duration);
+
         if (match == Match.Empty)
         {
             return null;
@@ -176,5 +183,18 @@ public partial class LogHandler(
             Title = "Log time",
             SubTitle = "log <issue-key> <duration ISO 8601> [date yyyy-MM-dd] [time HH:mm[:ss]]"
         };
+    }
+
+    private int? GetMaxHoursInDay()
+    {
+        try
+        {
+            return _maxHoursInDay ??= TempoApi.GetGlobalConfiguration()?.maxHoursPerDayPerUser;
+        }
+        catch (Exception e)
+        {
+            LogWrapper.Error("Failed to get max hours per day", GetType());
+            return null;
+        }
     }
 }
