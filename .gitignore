@@ -5,3 +5,5 @@
 /Community.PowerToys.Run.Plugin.Tempo/obj
 /Community.PowerToys.Run.Plugin.Tempo.UnitTest/bin
 /Community.PowerToys.Run.Plugin.Tempo.UnitTest/obj
+
+.env

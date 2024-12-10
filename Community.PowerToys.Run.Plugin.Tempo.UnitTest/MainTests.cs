@@ -1,5 +1,4 @@
-﻿using System.IO;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using PowerToys_Run_Tempo;
 using Wox.Plugin;
 
@@ -13,14 +12,24 @@ public class MainTests
     [TestInitialize]
     public void TestInitialize()
     {
-        _subject = new Main();
-        _subject.InitPluginPath(Path.Join("."));
+        DotNetEnv.Env.TraversePath().Load();
+        TestUtils.MockLogs();
+        
+        _subject = new Main(new PowerToys_Run_Tempo.Settings
+        {
+            AccountId = System.Environment.GetEnvironmentVariable("JIRA_ACCOUNT_ID") ?? "",
+            JiraEndpoint = System.Environment.GetEnvironmentVariable("JIRA_ENDPOINT") ?? "",
+            JiraUsername = System.Environment.GetEnvironmentVariable("JIRA_USERNAME") ?? "",
+            JiraToken = System.Environment.GetEnvironmentVariable("JIRA_TOKEN") ?? "",
+            TempoToken = System.Environment.GetEnvironmentVariable("TEMPO_TOKEN") ?? ""
+        });
+        _subject.InitSelf();
     }
 
     [TestMethod]
-    public void Query_should_be_empty()
+    public void ItGivesResult()
     {
-        var results = _subject.Query(new Query(""));
-        Assert.AreEqual(0, results.Count);
+        var results = _subject.Query(new Query("log"));       
+        Assert.AreEqual(1, results.Count);
     }
 }
