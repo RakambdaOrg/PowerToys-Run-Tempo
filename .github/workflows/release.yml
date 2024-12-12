@@ -39,7 +39,7 @@ jobs:
           }
           Compress-Archive -Path Community.PowerToys.Run.Plugin.Tempo\bin\${{matrix.platform}}\$env:PLUGIN_NAME -DestinationPath "${{env.PLUGIN_NAME}}-${{matrix.platform}}.zip"
       - name: Release
-        uses: softprops/action-gh-release@v2.1.0
+        uses: softprops/action-gh-release@v2.2.0
         with:
           fail_on_unmatched_files: false
           generate_release_notes: true
