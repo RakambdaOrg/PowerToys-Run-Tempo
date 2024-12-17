@@ -1,0 +1,33 @@
+version: 2
+updates:
+  - package-ecosystem: github-actions
+    assignees:
+      - Rakambda
+    schedule:
+      interval: daily
+      time: 05:00
+      timezone: Europe/Paris
+    pull-request-branch-name:
+      separator: "-"
+  - package-ecosystem: nuget
+    directory: /
+    assignees:
+      - Rakambda
+    schedule:
+      interval: daily
+      time: 05:00
+      timezone: Europe/Paris
+    pull-request-branch-name:
+      separator: "-"
+    groups:
+      restsharp:
+        patterns:
+          - restsharp
+          - restsharp.*
+      opencvsharp4:
+        patterns:
+          - opencvsharp4
+          - opencvsharp4.*
+      mstest:
+        patterns:
+          - MSTest.*
