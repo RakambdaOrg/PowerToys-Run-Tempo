@@ -4,7 +4,7 @@
   "IsGlobal": false,
   "Name": "Tempo",
   "Author": "Rakambda,muller-j",
-  "Version": "0.0.2",
+  "Version": "0.0.0",
   "Language": "csharp",
   "Website": "https://github.com/RakambdaOrg/PowerToys-Run-Tempo",
   "ExecuteFileName": "Community.PowerToys.Run.Plugin.Tempo.dll",
