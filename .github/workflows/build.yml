@@ -8,7 +8,7 @@ permissions:
   contents: write
 
 jobs:
-  publish:
+  build:
     uses: RakambdaOrg/rakambda-github-workflows/.github/workflows/powertoys-run-build.yml@main
     strategy:
       matrix:
